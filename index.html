@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Helps the browser identify support for mobile applications -->
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Title on the browser tab -->
+    <title>WebGIS</title>
+    <!-- Leaflet CSS Library -->
+    <link rel="stylesheet" href="http://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <!-- Leaflet JavaScript Library -->
+    <script src="http://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <!-- Style for the fullscreen map display -->
+    <style>
+      html,
+      body,
+      #map {
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HTML Block to display the map -->
+    <div id="map"></div>
+
+    <script>
+      /* Initial Map */
+      var map = L.map("map").setView([-7.9, 110.45], 10);
+
+      /* Tile Basemap */
+      var basemap0 = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      });
+      var Esri_WorldImagery = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        attribution: "Tiles &copy; Ghalang Palage &mdash; Statistics Study Program",
+      });
+
+      Esri_WorldImagery.addTo(map);
+
+      /* Layer Control */
+      var baseMaps = {
+        "Open Street Map": basemap0,
+        "Esri WorldImagery": Esri_WorldImagery,
+      };
+
+      L.control.layers(baseMaps, {}, { collapsed: false }).addTo(map);
+
+      // Custom Icon
+      var customIcon = L.icon({
+        iconUrl: "https://www.freeiconspng.com/uploads/maps-icon-11.png",
+        iconSize: [20, 20],
+      });
+
+      // Markers with Names
+      var markers = [
+        { coords: [-7.653893158063168, 110.37971926342742], name: "Puskesmas Turi" },
+        { coords: [-7.664838550862226, 110.4564827683139], name: "Puskesmas Cangkringan" },
+        { coords: [-7.689683667618935, 110.38865631208411], name: "Puskesmas Ngaglik 2" },
+        { coords: [-7.684364646958584, 110.41978986816733], name: "Puskesmas Pembantu Umbulmartani" },
+        { coords: [-7.660125001030467, 110.42135213050597], name: "Puskesmas Pakem" },
+        { coords: [-7.722102209916972, 110.40263416584958], name: "Puskemas Ngaglik 1" },
+        { coords: [-7.756636375240207, 110.40815212018772], name: "Puskemas Depok 2" },
+        { coords: [-7.7668058942818785, 110.38246482894915], name: "Puskesmas Gajah Mada" },
+        { coords: [-7.783237689325776, 110.36238659269013], name: "Puskesmas Jetis" },
+        { coords: [-7.799381446032483, 110.37192648946018], name: "Puskesmas Pakualaman" },
+      ];
+
+      // Add markers with popups
+      markers.forEach(function (marker) {
+        L.marker(marker.coords, { icon: customIcon })
+          .bindPopup("<b>" + marker.name + "</b>")
+          .addTo(map);
+      });
+    </script>
+  </body>
+</html>
